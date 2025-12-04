@@ -769,6 +769,7 @@ function Header({ srvStatus, isRunning, toggleStream }) {
               setAttackCount(0);
               setQuarantineCount(0);
               setIntel(null);
+              setReportDate("–");
               showToast("Dashboard refreshed", "linear-gradient(135deg,#22c55e,#22d3ee)");
             }}
             className="px-2 lg:px-3 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/70 text-[0.7rem] lg:text-xs text-sky-200 hover:bg-sky-500/10 flex items-center gap-1"
