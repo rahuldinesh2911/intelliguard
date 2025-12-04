@@ -17,4 +17,5 @@ export default defineConfig({
     emptyOutDir: false,      // Do NOT delete root files
     assetsDir: "assets",
   },
+  publicDir: "public",
 });
