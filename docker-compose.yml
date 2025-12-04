@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./back_end
+    ports:
+      - "5000:5000"
+    container_name: intelliguard_backend
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    container_name: intelliguard_frontend
+    depends_on:
+      - backend
