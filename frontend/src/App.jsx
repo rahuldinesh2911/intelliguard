@@ -351,6 +351,22 @@ function App() {
     });
   };
 
+  const refreshDashboard = () => {
+    setPackets([]);
+    setLabels([]);
+    setPacketRates([]);
+    setByteRates([]);
+    setProtocolCounts({ mqtt: 0, coap: 0, http: 0, udp: 0 });
+    setDevices({});
+    setTimeline([]);
+    setNormalCount(0);
+    setAttackCount(0);
+    setQuarantineCount(0);
+    setIntel(null);
+    setReportDate("–");
+    showToast("Dashboard refreshed", "linear-gradient(135deg,#22c55e,#22d3ee)");
+  };
+
   // ===== derived values =====
   const riskPercent = useMemo(() => {
     const total = normalCount + attackCount;
@@ -627,7 +643,7 @@ function App() {
       <div className="glow-orb bottom-0 right-0 absolute opacity-70" />
 
       {/* HEADER */}
-      <Header srvStatus={srvStatus} isRunning={isRunning} toggleStream={toggleStream} />
+      <Header srvStatus={srvStatus} isRunning={isRunning} toggleStream={toggleStream} refreshDashboard={refreshDashboard} />
 
       {/* LAYOUT: sidebar + routed content */}
       <div className="max-w-6xl mx-auto px-4 pb-10 relative z-10 flex flex-col lg:flex-row gap-5">
@@ -708,7 +724,7 @@ function App() {
 
 /* ================== LAYOUT COMPONENTS ================== */
 
-function Header({ srvStatus, isRunning, toggleStream }) {
+function Header({ srvStatus, isRunning, toggleStream, refreshDashboard }) {
   return (
     <header className="max-w-6xl mx-auto py-4 lg:py-6 px-4 relative z-10">
       <div className="glass-panel-strong px-3 lg:px-5 py-3 lg:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 lg:gap-4">
@@ -756,22 +772,7 @@ function Header({ srvStatus, isRunning, toggleStream }) {
             )}
           </button>
           <button
-            onClick={() => {
-              // Reset all state instead of page reload
-              setPackets([]);
-              setLabels([]);
-              setPacketRates([]);
-              setByteRates([]);
-              setProtocolCounts({ mqtt: 0, coap: 0, http: 0, udp: 0 });
-              setDevices({});
-              setTimeline([]);
-              setNormalCount(0);
-              setAttackCount(0);
-              setQuarantineCount(0);
-              setIntel(null);
-              setReportDate("–");
-              showToast("Dashboard refreshed", "linear-gradient(135deg,#22c55e,#22d3ee)");
-            }}
+            onClick={refreshDashboard}
             className="px-2 lg:px-3 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/70 text-[0.7rem] lg:text-xs text-sky-200 hover:bg-sky-500/10 flex items-center gap-1"
           >
             <RefreshCcw className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
