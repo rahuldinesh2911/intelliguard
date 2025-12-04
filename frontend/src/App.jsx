@@ -630,14 +630,14 @@ function App() {
       <Header srvStatus={srvStatus} isRunning={isRunning} toggleStream={toggleStream} />
 
       {/* LAYOUT: sidebar + routed content */}
-      <div className="max-w-6xl mx-auto px-4 pb-10 relative z-10 flex gap-5">
+      <div className="max-w-6xl mx-auto px-4 pb-10 relative z-10 flex flex-col lg:flex-row gap-5">
         <Sidebar
           totalDevices={totalDevices}
           highRiskDevices={highRiskDevices}
           timelineCount={timeline.length}
         />
 
-        <main className="flex-1 space-y-6">
+        <main className="flex-1 space-y-4 lg:space-y-6">
           <Routes>
             <Route
               path="/"
@@ -710,56 +710,57 @@ function App() {
 
 function Header({ srvStatus, isRunning, toggleStream }) {
   return (
-    <header className="max-w-6xl mx-auto py-6 px-4 relative z-10">
-      <div className="glass-panel-strong px-5 py-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-blue-700 flex items-center justify-center shadow-[0_0_35px_rgba(34,211,238,0.75)] ring-2 ring-cyan-300/50">
-            <Shield className="w-6 h-6 text-slate-950" strokeWidth={1.8} />
+    <header className="max-w-6xl mx-auto py-4 lg:py-6 px-4 relative z-10">
+      <div className="glass-panel-strong px-3 lg:px-5 py-3 lg:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 lg:gap-4">
+        <div className="flex items-center gap-3 lg:gap-4">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-blue-700 flex items-center justify-center shadow-[0_0_35px_rgba(34,211,238,0.75)] ring-2 ring-cyan-300/50">
+            <Shield className="w-5 h-5 lg:w-6 lg:h-6 text-slate-950" strokeWidth={1.8} />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-extrabold text-cyan-200 leading-tight tracking-tight">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+              <h1 className="text-xl lg:text-2xl font-extrabold text-cyan-200 leading-tight tracking-tight">
                 IntelliGuard SOC
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[0.65rem] bg-emerald-500/10 text-emerald-300 border border-emerald-500/40 uppercase tracking-wide">
+              <span className="px-2 py-0.5 rounded-full text-[0.6rem] lg:text-[0.65rem] bg-emerald-500/10 text-emerald-300 border border-emerald-500/40 uppercase tracking-wide w-fit">
                 {FRONTEND_ONLY ? "Demo" : "Live"}
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-1 flex items-center gap-2">
+            <p className="text-[0.7rem] lg:text-xs text-slate-400 mt-1 flex items-center gap-2">
               <Wifi className="w-3 h-3 text-sky-400" />
-              {FRONTEND_ONLY ? "Simulated IoT Threat & Anomaly Monitoring" : "Real-time IoT Threat & Anomaly Monitoring"}
+              <span className="hidden sm:inline">{FRONTEND_ONLY ? "Simulated IoT Threat & Anomaly Monitoring" : "Real-time IoT Threat & Anomaly Monitoring"}</span>
+              <span className="sm:hidden">IoT Security Monitor</span>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <div
-            className="px-3 py-1.5 rounded-full text-xs bg-slate-900/80 border border-slate-600/70 flex items-center gap-2"
+            className="px-2 lg:px-3 py-1.5 rounded-full text-[0.7rem] lg:text-xs bg-slate-900/80 border border-slate-600/70 flex items-center gap-2"
             style={{ color: srvStatus.color }}
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            {srvStatus.text}
+            <span className="hidden sm:inline">{srvStatus.text}</span>
           </div>
           <button
             onClick={toggleStream}
-            className={`px-3 py-1.5 rounded-full text-xs flex items-center gap-1 ${
+            className={`px-2 lg:px-3 py-1.5 rounded-full text-[0.7rem] lg:text-xs flex items-center gap-1 ${
               isRunning
                 ? "bg-red-600/90 border border-red-500/70 text-red-100 hover:bg-red-500/10"
                 : "bg-green-600/90 border border-green-500/70 text-green-100 hover:bg-green-500/10"
             }`}
           >
             {isRunning ? (
-              <><Pause className="w-3.5 h-3.5" />Stop</>
+              <><Pause className="w-3 h-3 lg:w-3.5 lg:h-3.5" /><span className="hidden sm:inline">Stop</span></>
             ) : (
-              <><Play className="w-3.5 h-3.5" />Start</>
+              <><Play className="w-3 h-3 lg:w-3.5 lg:h-3.5" /><span className="hidden sm:inline">Start</span></>
             )}
           </button>
           <button
             onClick={() => window.location.reload()}
-            className="px-3 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/70 text-xs text-sky-200 hover:bg-sky-500/10 flex items-center gap-1"
+            className="px-2 lg:px-3 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/70 text-[0.7rem] lg:text-xs text-sky-200 hover:bg-sky-500/10 flex items-center gap-1"
           >
-            <RefreshCcw className="w-3.5 h-3.5" />
-            Refresh
+            <RefreshCcw className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+            <span className="hidden sm:inline">Refresh</span>
           </button>
         </div>
       </div>
@@ -770,7 +771,7 @@ function Header({ srvStatus, isRunning, toggleStream }) {
 function Sidebar({ totalDevices, highRiskDevices, timelineCount }) {
 
   return (
-    <aside className="hidden lg:flex flex-col w-52 mr-1 sticky top-20 h-[520px] glass-panel px-3 py-4 text-xs text-slate-300">
+    <aside className="flex flex-col w-full lg:w-52 lg:mr-1 lg:sticky lg:top-20 lg:h-[520px] glass-panel px-3 py-4 text-xs text-slate-300 mb-4 lg:mb-0">
       <div className="flex items-center gap-2 mb-3 font-semibold text-slate-200">
         <Cpu className="w-4 h-4 text-sky-400" />
         Console
@@ -831,7 +832,7 @@ function OverviewPage({
   return (
     <>
       {/* Stats */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
         <StatsCard
           title="Normal Traffic"
           badge="HEALTHY"
@@ -859,7 +860,7 @@ function OverviewPage({
       </section>
 
       {/* Gauge + Line */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         <div className="glass-panel px-6 py-5 flex flex-col items-center justify-center">
           <h3 className="section-heading">
             <span className="text-pink-300">🧠 Network Threat Level</span>
@@ -934,7 +935,7 @@ function OverviewPage({
 
 function TrafficPage({ pieData, packets, exportTableCsv, setPackets }) {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
       <div className="glass-panel px-5 py-4 flex flex-col items-center">
         <h3 className="section-heading mb-1">📊 Protocol Distribution</h3>
         <p className="subtext mb-3">
@@ -955,7 +956,7 @@ function TrafficPage({ pieData, packets, exportTableCsv, setPackets }) {
         </div>
       </div>
 
-      <div className="md:col-span-2 glass-panel px-5 py-4">
+      <div className="lg:col-span-2 glass-panel px-4 lg:px-5 py-4">
         <h3 className="section-heading mb-1">📡 Live IoT Traffic Stream</h3>
         <p className="subtext mb-3">
           Most recent packets from simulated devices — ideal for demoing IoT
@@ -977,8 +978,8 @@ function TrafficPage({ pieData, packets, exportTableCsv, setPackets }) {
           </button>
         </div>
 
-        <div className="overflow-y-auto max-h-[340px] custom-scroll table-wrapper rounded-xl border border-slate-800/90">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto overflow-y-auto max-h-[340px] custom-scroll table-wrapper rounded-xl border border-slate-800/90">
+          <table className="w-full text-xs lg:text-sm min-w-[600px]">
             <thead className="sticky top-0">
               <tr>
                 <th className="p-2 text-left">Time</th>
@@ -1036,7 +1037,7 @@ function TrafficPage({ pieData, packets, exportTableCsv, setPackets }) {
 
 function DevicesPage({ deviceList, timeline }) {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
       <div className="glass-panel px-5 py-4 lg:col-span-2">
         <h3 className="section-heading mb-1">🧩 Device Overview</h3>
         <p className="subtext mb-3">
@@ -1047,7 +1048,7 @@ function DevicesPage({ deviceList, timeline }) {
             No devices observed yet. Traffic will populate this section.
           </p>
         ) : (
-          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
             {deviceList.map((d) => (
               <DeviceCard key={d.id} device={d} />
             ))}
@@ -1087,7 +1088,7 @@ function ReportsPage({
   runIntel,
 }) {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mt-4">
       <div className="glass-panel px-5 py-5">
         <h3 className="section-heading mb-1">📄 Security Reports</h3>
         <p className="text-sm text-slate-300 mb-3">

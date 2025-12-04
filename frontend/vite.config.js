@@ -1,14 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
 
-  // GitHub Pages fix:
-  base: process.env.NODE_ENV === "production"
-    ? "/intelliguard/"  // <-- replace with YOUR repo name
-    : "/",
+  // Required for GitHub Pages
+  base: "/intelliguard/",   // <-- MUST MATCH YOUR REPO NAME EXACTLY
 
   server: {
     port: 5173,
@@ -16,7 +13,8 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "dist",
+    outDir: "../docs",       // <-- IMPORTANT: Build directly into /docs at root
+    emptyOutDir: false,      // Do NOT delete root files
     assetsDir: "assets",
   },
 });
