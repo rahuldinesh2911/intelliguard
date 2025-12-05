@@ -79,7 +79,7 @@ function App() {
   const [reportDate, setReportDate] = useState("–");
 
   const [esAttempts, setEsAttempts] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
   const [simulationInterval, setSimulationInterval] = useState(null);
 
   const showToast = (
