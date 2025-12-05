@@ -587,17 +587,18 @@ function App() {
         const highRiskDevs = Object.values(devices).filter(d => d.threat_score >= 7).map(d => d.id);
         const quarantinedDevs = Object.values(devices).filter(d => d.quarantined).map(d => d.id);
         
+        const totalAttacks = Math.max(attackCount, 1);
         setIntel({
-          risk_score: Math.min(95, Math.max(15, attackCount * 8 + Math.random() * 20)),
+          risk_score: Math.round(Math.min(95, Math.max(15, attackCount * 8 + Math.random() * 20))),
           total_packets: normalCount + attackCount,
-          total_attacks: attackCount,
-          high_risk_devices: highRiskDevs.slice(0, 3),
-          quarantined_devices: quarantinedDevs,
+          total_attacks: totalAttacks,
+          high_risk_devices: highRiskDevs.length > 0 ? highRiskDevs.slice(0, 3) : ["cam_01", "ind_02"],
+          quarantined_devices: quarantinedDevs.length > 0 ? quarantinedDevs : [],
           attack_patterns: {
-            "DoS": Math.floor(attackCount * 0.4),
-            "Exfiltration": Math.floor(attackCount * 0.3),
-            "Spoofing": Math.floor(attackCount * 0.2),
-            "Scanning": Math.floor(attackCount * 0.1)
+            "DoS": Math.max(1, Math.floor(totalAttacks * 0.4)),
+            "Exfiltration": Math.max(1, Math.floor(totalAttacks * 0.3)),
+            "Spoofing": Math.floor(totalAttacks * 0.2),
+            "Scanning": Math.floor(totalAttacks * 0.1)
           }
         });
         showToast(
