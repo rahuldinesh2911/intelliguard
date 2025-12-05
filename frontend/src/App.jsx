@@ -584,21 +584,33 @@ function App() {
     if (FRONTEND_ONLY) {
       // Mock threat intelligence for demo
       setTimeout(() => {
-        const highRiskDevs = Object.values(devices).filter(d => d.threat_score >= 7).map(d => d.id);
-        const quarantinedDevs = Object.values(devices).filter(d => d.quarantined).map(d => d.id);
+        const deviceArray = Object.values(devices);
+        const highRiskDevs = deviceArray.filter(d => d.threat_score >= 7).map(d => d.id);
+        const quarantinedDevs = deviceArray.filter(d => d.quarantined).map(d => d.id);
         
-        const totalAttacks = Math.max(attackCount, 1);
+        // Generate realistic attack distribution
+        const totalAttacks = Math.max(attackCount, 5);
+        const dosAttacks = Math.max(1, Math.floor(totalAttacks * (0.35 + Math.random() * 0.15)));
+        const exfilAttacks = Math.max(1, Math.floor(totalAttacks * (0.25 + Math.random() * 0.15)));
+        const spoofAttacks = Math.floor(totalAttacks * (0.15 + Math.random() * 0.1));
+        const scanAttacks = Math.floor(totalAttacks * (0.1 + Math.random() * 0.1));
+        
+        // Calculate risk score based on attacks and devices
+        const riskBase = Math.min(85, Math.max(25, (attackCount / Math.max(normalCount + attackCount, 1)) * 100));
+        const riskScore = Math.round(riskBase + Math.random() * 15);
+        
         setIntel({
-          risk_score: Math.round(Math.min(95, Math.max(15, attackCount * 8 + Math.random() * 20))),
+          risk_score: riskScore,
           total_packets: normalCount + attackCount,
           total_attacks: totalAttacks,
-          high_risk_devices: highRiskDevs.length > 0 ? highRiskDevs.slice(0, 3) : ["cam_01", "ind_02"],
+          high_risk_devices: highRiskDevs.length > 0 ? highRiskDevs.slice(0, 3) : 
+            deviceArray.length > 0 ? deviceArray.slice(0, 2).map(d => d.id) : ["cam_01", "ind_02"],
           quarantined_devices: quarantinedDevs.length > 0 ? quarantinedDevs : [],
           attack_patterns: {
-            "DoS": Math.max(1, Math.floor(totalAttacks * 0.4)),
-            "Exfiltration": Math.max(1, Math.floor(totalAttacks * 0.3)),
-            "Spoofing": Math.floor(totalAttacks * 0.2),
-            "Scanning": Math.floor(totalAttacks * 0.1)
+            "DoS": dosAttacks,
+            "Exfiltration": exfilAttacks,
+            "Spoofing": spoofAttacks,
+            "Scanning": scanAttacks
           }
         });
         showToast(
