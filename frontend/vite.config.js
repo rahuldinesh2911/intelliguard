@@ -13,8 +13,8 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "../docs",       // <-- IMPORTANT: Build directly into /docs at root
-    emptyOutDir: false,      // Do NOT delete root files
+    outDir: "dist",
+    emptyOutDir: true,
     assetsDir: "assets",
   },
   publicDir: "public",
